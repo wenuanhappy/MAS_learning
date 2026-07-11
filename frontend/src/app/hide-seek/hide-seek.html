@@ -1,0 +1,124 @@
+<div class="hide-seek-layout">
+  <app-sidebar></app-sidebar>
+  <div class="game-main">
+    <div class="game-toolbar">
+      <h2 class="game-title">3D 躲猫猫</h2>
+      <div class="toolbar-spacer"></div>
+      <div class="toolbar-controls">
+        <label class="control-group">
+          <span class="control-label">躲藏者</span>
+          <select [(ngModel)]="hiderCount" class="control-select" [disabled]="gameStarted">
+            <option [ngValue]="1">1</option>
+            <option [ngValue]="2">2</option>
+            <option [ngValue]="3">3</option>
+            <option [ngValue]="4">4</option>
+            <option [ngValue]="5">5</option>
+          </select>
+        </label>
+        <label class="control-group toggle-group">
+          <span class="control-label">信息共享</span>
+          <div class="toggle-switch" [class.active]="shareInfo" (click)="!gameStarted && (shareInfo = !shareInfo)">
+            <div class="toggle-knob"></div>
+          </div>
+        </label>
+      </div>
+      <button *ngIf="!gameStarted" (click)="startGame()" class="btn-start">
+        开始游戏
+      </button>
+      <button *ngIf="gameStarted && !gameFinished" disabled class="btn-running">
+        搜索中... 第{{ round }}轮 (已找到{{ foundCount }}/{{ hiderCount }})
+      </button>
+      <button *ngIf="gameFinished" (click)="resetGame()" class="btn-reset">
+        重新开始
+      </button>
+    </div>
+    <div class="game-content">
+      <!-- Left panel: experiment info + stats -->
+      <div class="side-panel" *ngIf="showInfoPanel">
+        <div class="panel-toggle" (click)="showInfoPanel = false" title="折叠面板">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </div>
+        <div class="panel-section">
+          <h3 class="panel-title">实验说明</h3>
+          <div class="panel-body">
+            <p class="panel-text">
+              本实验用于研究<strong>信息共享</strong>对多智能体协作效率的影响。
+            </p>
+            <p class="panel-text">
+              场景中有{{ hiderCount }}名躲藏者和1名搜索者。躲藏者可以感知附近（8米内）的搜索者，并选择是否移动。
+            </p>
+            <p class="panel-text">
+              <strong>开启信息共享</strong>时，躲藏者之间会互相传递"搜索者在我附近"的警告，包含发送者位置和搜索者距离。
+            </p>
+            <p class="panel-text">
+              <strong>关闭信息共享</strong>时，躲藏者只能依靠自身感知，无法得知队友的情况。
+            </p>
+            <p class="panel-text">
+              通过对比两种模式下的平均搜索轮次，观察信息共享是否能帮助躲藏者存活更久。
+            </p>
+          </div>
+        </div>
+
+        <div class="panel-section" *ngIf="statsEnabled">
+          <h3 class="panel-title">实验统计</h3>
+          <div class="panel-body">
+            <div class="stat-row">
+              <span class="stat-label">信息共享开启</span>
+              <span class="stat-value">{{ stats.withSharing.games }}局 / 平均{{ stats.withSharing.avgRounds }}轮</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">信息共享关闭</span>
+              <span class="stat-value">{{ stats.withoutSharing.games }}局 / 平均{{ stats.withoutSharing.avgRounds }}轮</span>
+            </div>
+            <div class="stat-conclusion" *ngIf="stats.withSharing.games >= 3 && stats.withoutSharing.games >= 3">
+              <p *ngIf="stats.withSharing.avgRounds > stats.withoutSharing.avgRounds">
+                结论：信息共享帮助躲藏者平均多存活 {{ stats.withSharing.avgRounds - stats.withoutSharing.avgRounds }} 轮
+              </p>
+              <p *ngIf="stats.withSharing.avgRounds <= stats.withoutSharing.avgRounds">
+                结论：两种模式差异不明显，建议增加实验局数
+              </p>
+            </div>
+            <button (click)="resetStats()" class="btn-sm">重置统计</button>
+          </div>
+        </div>
+
+        <div class="panel-section" *ngIf="currentAnalysis">
+          <h3 class="panel-title">当前分析</h3>
+          <div class="panel-body">
+            <p class="panel-text">{{ currentAnalysis }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Collapsed panel toggle -->
+      <div class="panel-collapsed" *ngIf="!showInfoPanel" (click)="showInfoPanel = true" title="展开实验面板">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </div>
+
+      <div class="canvas-wrapper">
+        <canvas #canvas></canvas>
+        <div class="game-legend">
+          <span class="legend-item hider1">● 躲藏者</span>
+          <span class="legend-item seeker">● 搜索者</span>
+          <span class="legend-item spot">○ 躲避点</span>
+          <span class="legend-item vision">△ 视野</span>
+        </div>
+        <div class="log-panel">
+          <div class="log-header">游戏日志</div>
+          <div class="log-scroll" #logContainer>
+            <div *ngFor="let msg of logMessages" class="log-entry" [class]="'log-' + msg.type">
+              {{ msg.text }}
+            </div>
+            <div *ngIf="logMessages.length === 0" class="log-empty">
+              点击"开始游戏"启动躲猫猫
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,83 @@
+<div class="agent-editor-overlay" *ngIf="visible" (click)="onClose()">
+  <div class="agent-editor-panel" (click)="$event.stopPropagation()">
+    <div class="panel-header">
+      <h3>✏️ 编辑 Agent 状态</h3>
+      <button class="close-btn" (click)="onClose()">×</button>
+    </div>
+    
+    <div class="panel-body" *ngIf="agent">
+      <!-- Agent 信息 -->
+      <div class="info-section">
+        <div class="info-row">
+          <span class="info-label">ID:</span>
+          <span class="info-value">{{ agent.name }}</span>
+        </div>
+      </div>
+
+      <!-- Role 编辑 -->
+      <div class="form-group">
+        <label>🎭 角色 (Role)</label>
+        <input type="text" [(ngModel)]="editedRole" placeholder="输入角色名称" class="form-input" />
+      </div>
+
+      <!-- Prompt 编辑 -->
+      <div class="form-group">
+        <label>📝 提示词 (Prompt)</label>
+        <textarea [(ngModel)]="editedPrompt" rows="5" placeholder="输入任务提示..." class="form-textarea"></textarea>
+      </div>
+
+      <!-- Context 上下文编辑 -->
+      <div class="form-group">
+        <label>📋 上下文 (Context)</label>
+        
+        <!-- 结构化显示（从后端获取的数据） -->
+        <div *ngIf="hasStructuredContext" class="structured-context">
+          <div class="context-section">
+            <span class="context-label">🎯 任务目标</span>
+            <textarea [(ngModel)]="taskGoal" rows="2" class="form-textarea context-readonly" readonly></textarea>
+          </div>
+          <div class="context-section">
+            <span class="context-label">💬 对话历史</span>
+            <textarea [(ngModel)]="conversationHistory" rows="4" class="form-textarea context-readonly" readonly></textarea>
+          </div>
+          <div class="context-section">
+            <span class="context-label">📝 完整 Prompt（发送给 LLM）</span>
+            <textarea [(ngModel)]="editedContext" rows="6" class="form-textarea context-readonly" readonly></textarea>
+          </div>
+        </div>
+        
+        <!-- 简单显示（手动输入或旧格式） -->
+        <textarea *ngIf="!hasStructuredContext" [(ngModel)]="editedContext" rows="4" placeholder="暂无上下文信息" class="form-textarea context-readonly" readonly></textarea>
+      </div>
+
+      <!-- 当前状态显示 -->
+      <div class="status-section">
+        <label>📍 当前状态</label>
+        <div class="status-grid">
+          <div class="status-item">
+            <span class="status-label">位置 X</span>
+            <span class="status-value">{{ agent.model?.position?.x?.toFixed(2) || '-' }}</span>
+          </div>
+          <div class="status-item">
+            <span class="status-label">位置 Z</span>
+            <span class="status-value">{{ agent.model?.position?.z?.toFixed(2) || '-' }}</span>
+          </div>
+          <div class="status-item">
+            <span class="status-label">目标</span>
+            <span class="status-value">{{ agent.target ? '移动中' : '静止' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 操作按钮 -->
+      <div class="panel-actions">
+        <button (click)="onClose()" class="btn-cancel">取消</button>
+        <button (click)="onSave()" class="btn-save">💾 保存修改</button>
+      </div>
+    </div>
+    
+    <div class="panel-empty" *ngIf="!agent">
+      <p>未选择 Agent</p>
+    </div>
+  </div>
+</div>

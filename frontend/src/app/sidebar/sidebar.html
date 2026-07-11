@@ -1,0 +1,17 @@
+<div class="sidebar">
+  <h3 class="username">欢迎，{{this.sharedService.username}}</h3>
+  <ul>
+    <li class="nav-group" [class.expanded]="workflowExpanded">
+      <a class="nav-group-title" (click)="workflowExpanded = !workflowExpanded">
+        <span class="arrow">{{ workflowExpanded ? '▼' : '▶' }}</span>
+        📋 工作流
+      </a>
+      <ul class="nav-sub" *ngIf="workflowExpanded">
+        <li><a [routerLink]="['/templates']">📄 从模版新建</a></li>
+        <li><a (click)="newWorkflow()">➕ 新建工作流</a></li>
+        <li><a [routerLink]="['/workflows']">📁 我的工作流</a></li>
+      </ul>
+    </li>
+    <li><a [routerLink]="['/hide-seek']">🎯 3D躲猫猫</a></li>
+  </ul>
+</div>

@@ -1,0 +1,13 @@
+<!--<div class="menu">-->
+<!--  <button (click)="mode='scene'">场景</button>-->
+<!--  <button (click)="mode='editor'">编辑器</button>-->
+<!--</div>-->
+
+<!--<app-scene *ngIf="mode==='scene'"></app-scene>-->
+<!--<app-agent-editor *ngIf="mode==='editor'"></app-agent-editor>-->
+<app-top-bar></app-top-bar>
+<div class="layout">
+  <div class="main-content">
+    <router-outlet></router-outlet>
+  </div>
+</div>

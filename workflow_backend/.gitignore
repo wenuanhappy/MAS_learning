@@ -1,0 +1,23 @@
+target/
+
+# IDE
+.idea/
+*.iml
+
+# Build
+*.jar
+*.war
+*.ear
+!-target/*.jar
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE workspace
+*.sublime-workspace
+*.sublime-project

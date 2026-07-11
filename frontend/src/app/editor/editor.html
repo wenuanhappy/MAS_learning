@@ -1,0 +1,292 @@
+<div class="editor-layout">
+  <app-sidebar></app-sidebar>
+  <div class="editor-main">
+
+  <!-- 保存提示 Toast -->
+  <div class="save-toast" *ngIf="saveMessage">{{ saveMessage }}</div>
+
+  <div class="toolbar">
+
+    <!-- 基础节点添加 -->
+    <div class="toolbar-group">
+      <span class="group-label">添加智能体：</span>
+      <input type="text" [(ngModel)]="newNodeId" placeholder="ID" class="input-sm" />
+      <input type="text" [(ngModel)]="newNodeRole" placeholder="Role" class="input-sm" />
+      <textarea [(ngModel)]="newNodePrompt" placeholder="Prompt" rows="1" class="input-prompt"></textarea>
+      <button (click)="addNode()" class="btn-primary">+ 添加</button>
+    </div>
+
+    <!-- 高级功能按钮 -->
+    <div class="toolbar-group">
+      <button (click)="showJudgePanel = !showJudgePanel" [class.active]="showJudgePanel" class="btn-judge-toggle">
+        添加判断节点
+        <span class="toggle-icon">{{ showJudgePanel ? '▼' : '▶' }}</span>
+      </button>
+      <button (click)="addEndNode()" class="btn-end" [disabled]="nodes.some(n => n.isEnd)">
+        添加终止节点
+      </button>
+    </div>
+
+    <!-- 操作按钮 -->
+    <div class="toolbar-group toolbar-actions">
+      <button (click)="exportJSON()" class="btn-action">进入 3D 场景</button>
+      <button (click)="saveWorkflow()" class="btn-secondary">保存</button>
+    </div>
+  </div>
+
+  <!-- 任务目标栏（可折叠） -->
+  <div class="task-bar" [class.collapsed]="!taskBarVisible">
+    <div class="task-bar-header" (click)="taskBarVisible = !taskBarVisible">
+      <span class="task-label">🎯 任务目标</span>
+      <span class="task-toggle">{{ taskBarVisible ? '▼' : '▶' }}</span>
+    </div>
+    <div class="task-bar-body" *ngIf="taskBarVisible">
+      <input type="text" [(ngModel)]="taskGoal" placeholder="输入任务描述，如：设计一个简单的计算器程序" class="input-task-goal" />
+    </div>
+  </div>
+
+  <!-- 场景知识面板（从模版加载时显示） -->
+  <div class="education-bar" *ngIf="templateEducation" [class.collapsed]="!educationBarVisible">
+    <div class="education-bar-header" (click)="educationBarVisible = !educationBarVisible">
+      <span class="education-label">📚 场景知识</span>
+      <span class="education-toggle">{{ educationBarVisible ? '▼' : '▶' }}</span>
+    </div>
+    <div class="education-bar-body" *ngIf="educationBarVisible">
+      <pre class="education-content">{{ templateEducation }}</pre>
+    </div>
+  </div>
+
+  <!-- 判断节点配置面板（可折叠） -->
+  <div *ngIf="showJudgePanel" class="judge-panel">
+
+    <div class="judge-panel-header">
+      <span>⚖️ 判断节点配置</span>
+      <button (click)="showJudgePanel = false" class="close-panel-btn">×</button>
+    </div>
+
+    <div class="judge-panel-body">
+      <div class="condition-options-list" *ngIf="conditionOptionsList.length > 0">
+        <div *ngFor="let opt of conditionOptionsList; let i = index" class="condition-opt-item">
+          <span class="opt-name">{{ opt.name }}</span>
+          <span class="opt-desc">{{ opt.description }}</span>
+          <button (click)="removeConditionOption(i)" class="remove-btn">×</button>
+        </div>
+      </div>
+
+      <div class="add-condition-row">
+        <input type="text" [(ngModel)]="newConditionName" placeholder="条件名(如: pass)" />
+        <input type="text" [(ngModel)]="newConditionDesc" placeholder="描述(如: 测试通过)" />
+        <button (click)="addConditionOption()" class="add-opt-btn">+</button>
+      </div>
+
+      <button (click)="addJudgeNode()" class="judge-create-btn" [disabled]="conditionOptionsList.length === 0">
+        创建判断节点
+      </button>
+    </div>
+
+  </div>
+
+  <!-- 右键菜单 -->
+
+  <div
+    *ngIf="contextMenuVisible"
+    class="context-menu"
+    [style.left.px]="contextMenuX"
+    [style.top.px]="contextMenuY">
+
+    <div (click)="startAddEdge('normal')">
+      添加边
+    </div>
+
+    <div (click)="startAddEdge('condition')">
+      添加条件边
+    </div>
+
+    <div (click)="deleteNode(contextMenuNode!)">
+      删除节点
+    </div>
+
+  </div>
+
+  <!-- 画布 -->
+
+  <div
+    class="canvas"
+    (mousemove)="onDrag($event)"
+    (mouseup)="stopDrag()"
+    (click)="closeContextMenu()">
+
+    <svg class="edges">
+
+      <!-- 箭头定义 -->
+
+      <defs>
+
+        <!-- 普通边箭头 -->
+
+        <marker
+          id="arrow-normal"
+          markerWidth="10"
+          markerHeight="10"
+          refX="9"
+          refY="3"
+          orient="auto"
+          markerUnits="strokeWidth">
+
+          <path
+            d="M0,0 L0,6 L9,3 z"
+            fill="white">
+          </path>
+
+        </marker>
+
+        <!-- 条件边箭头 -->
+
+        <marker
+          id="arrow-condition"
+          markerWidth="10"
+          markerHeight="10"
+          refX="9"
+          refY="3"
+          orient="auto"
+          markerUnits="strokeWidth">
+
+          <path
+            d="M0,0 L0,6 L9,3 z"
+            fill="#ff9800">
+          </path>
+
+        </marker>
+
+      </defs>
+
+      <!-- 普通边 -->
+
+      <line
+        *ngFor="let e of edges"
+
+        [attr.x1]="getEdgePoints(e.from, e.to).x1"
+        [attr.y1]="getEdgePoints(e.from, e.to).y1"
+
+        [attr.x2]="getEdgePoints(e.from, e.to).x2"
+        [attr.y2]="getEdgePoints(e.from, e.to).y2"
+        stroke="white"
+
+        stroke-width="2"
+
+        marker-end="url(#arrow-normal)"
+      />
+
+      <!-- 条件边 -->
+
+      <ng-container *ngFor="let e of conditionEdges">
+
+        <ng-container *ngFor="let cond of objectKeys(e.conditions)">
+
+          <g>
+
+            <!-- 曲线路径 -->
+
+            <path
+
+              [attr.d]="getConditionPath(
+            e.from,
+            e.conditions[cond]
+          )"
+
+              stroke="#ff9800"
+
+              stroke-width="3"
+
+              fill="none"
+
+              stroke-dasharray="8 4"
+
+              marker-end="url(#arrow-condition)"
+            />
+
+            <!-- 条件文字 -->
+
+            <text
+
+              [attr.x]="getConditionLabelX(
+            e.from,
+            e.conditions[cond]
+          )"
+
+              [attr.y]="getConditionLabelY(
+            e.from,
+            e.conditions[cond]
+          )"
+
+              fill="#ff9800"
+
+              font-size="12"
+
+              text-anchor="middle">
+
+              {{ cond }}
+
+            </text>
+
+          </g>
+
+        </ng-container>
+
+      </ng-container>
+
+    </svg>
+    <!-- 节点 -->
+
+    <div
+      *ngFor="let node of nodes"
+
+      [class]="getNodeClass(node)"
+
+      [style.left.px]="node.x"
+      [style.top.px]="node.y"
+
+      (mousedown)="startDrag($event, node)"
+
+      (click)="onNodeClick(node)"
+
+      (contextmenu)="onRightClick($event, node)">
+
+      <div class="node-title">
+        {{ getNodeIcon(node) }}{{ node.role }}
+      </div>
+
+      <div class="node-id">
+        {{ node.id }}{{ getNodeSuffix(node) }}
+      </div>
+
+      <div class="node-prompt" *ngIf="!node.isEnd">
+        {{ node.prompt }}
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 条件边面板 -->
+
+  <app-condition-panel
+
+    *ngIf="editingConditionEdge"
+
+    [edge]="editingConditionEdge"
+
+    [nodes]="nodes"
+
+    [style.position]="'fixed'"
+
+    [style.left.px]="conditionPanelAnchor?.x"
+
+    [style.top.px]="conditionPanelAnchor?.y"
+
+    (close)="editingConditionEdge = null; conditionPanelAnchor = null"
+
+    (save)="onSaveConditionEdge($event)">
+
+  </app-condition-panel>
+  </div>
+</div>

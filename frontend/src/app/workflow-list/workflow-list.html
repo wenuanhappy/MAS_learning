@@ -1,0 +1,31 @@
+<div class="workflow-layout">
+
+  <app-sidebar></app-sidebar>
+
+  <div class="workflow-main">
+
+    <div class="workflow-container">
+
+      <h2>我的工作流</h2>
+
+      <div
+        class="workflow-card"
+        *ngFor="let wf of workflows"
+        (click)="loadWorkflow(wf)"
+      >
+
+        <div class="workflow-title">
+          {{ wf.name }}
+        </div>
+
+        <div class="workflow-time">
+          上次修改：{{ wf.createdAt }}
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

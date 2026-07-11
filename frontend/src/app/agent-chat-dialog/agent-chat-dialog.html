@@ -1,0 +1,39 @@
+<div class="chat-dialog-overlay" *ngIf="visible" (click)="onClose()">
+  <div class="chat-dialog" (click)="$event.stopPropagation()">
+    <div class="chat-dialog-header">
+      <div class="chat-dialog-title">
+        <span class="agent-icon">🤖</span>
+        <span>与 {{ agent?.role || agent?.name || 'Agent' }} 对话</span>
+      </div>
+      <button class="close-btn" (click)="onClose()">×</button>
+    </div>
+
+    <div class="chat-dialog-messages">
+      <div *ngFor="let msg of messages" class="chat-msg" [class.user-msg]="msg.role === 'user'" [class.agent-msg]="msg.role === 'agent'">
+        <div class="msg-avatar">{{ msg.role === 'user' ? '👤' : '🤖' }}</div>
+        <div class="msg-content">{{ msg.content }}</div>
+      </div>
+      <div *ngIf="isWaiting" class="chat-msg agent-msg">
+        <div class="msg-avatar">🤖</div>
+        <div class="msg-content typing-indicator">
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="chat-dialog-input">
+      <textarea
+        [(ngModel)]="inputText"
+        (keydown)="onKeyDown($event)"
+        placeholder="输入你的问题..."
+        rows="2"
+        [disabled]="isWaiting"
+      ></textarea>
+      <button (click)="sendMessage()" [disabled]="isWaiting || !inputText.trim()" class="send-btn">
+        发送
+      </button>
+    </div>
+  </div>
+</div>

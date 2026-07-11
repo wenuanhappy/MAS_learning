@@ -1,0 +1,157 @@
+.panel {
+  width: 280px;
+  background: #1e1e1e;
+  color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  overflow: hidden;
+  font-size: 13px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  background: #2a2a2a;
+  font-weight: bold;
+}
+
+.close-btn {
+  background: transparent;
+  border: none;
+  color: #aaa;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.close-btn:hover {
+  color: white;
+}
+
+.body {
+  padding: 10px;
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+input, select {
+  background: #2b2b2b;
+  border: 1px solid #444;
+  color: white;
+  padding: 6px;
+  border-radius: 6px;
+  outline: none;
+}
+
+input:focus, select:focus {
+  border-color: #666;
+}
+
+.section-title {
+  font-size: 12px;
+  color: #aaa;
+  margin: 8px 0;
+}
+
+.condition-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.condition-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #2a2a2a;
+  padding: 6px;
+  border-radius: 6px;
+}
+
+.condition-item .text {
+  font-size: 12px;
+}
+
+button {
+  background: #3a3a3a;
+  border: none;
+  color: white;
+  padding: 5px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #555;
+}
+
+.add-box {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.footer {
+  padding: 10px;
+  background: #2a2a2a;
+  text-align: right;
+}
+
+.save-btn {
+  background: #4a6cf7;
+}
+
+.save-btn:hover {
+  background: #3a5ce0;
+}
+
+.judge-info {
+  margin-top: 6px;
+  color: #ff9800;
+}
+
+.empty-hint {
+  text-align: center;
+  color: #666;
+  font-size: 12px;
+  padding: 10px;
+}
+
+.condition-select-row,
+.target-select-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.condition-select-row label,
+.target-select-row label {
+  font-size: 11px;
+  color: #aaa;
+}
+
+.all-configured-hint {
+  text-align: center;
+  color: #4caf50;
+  font-size: 12px;
+  padding: 12px;
+  background: rgba(76, 175, 80, 0.1);
+  border-radius: 6px;
+}
+
+button[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+button[disabled]:hover {
+  background: #3a3a3a;
+}

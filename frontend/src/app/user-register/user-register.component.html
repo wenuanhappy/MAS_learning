@@ -1,0 +1,38 @@
+<form #form="ngForm" (ngSubmit)="register()" class="register-form">
+  <h2>Register</h2>
+
+  <!-- 用户名 -->
+  <input [(ngModel)]="username" name="username" #usernameField="ngModel"
+         placeholder="用户名" required
+         [ngClass]="{'invalid': usernameField.invalid && usernameField.touched}" />
+  <div class="error" *ngIf="usernameField.invalid && usernameField.touched">
+    用户名为必填项
+  </div>
+  <br />
+
+  <!-- 邮箱 -->
+  <input [(ngModel)]="email" name="email" type="email" #emailField="ngModel"
+         placeholder="电子邮箱" required
+         [ngClass]="{'invalid': emailField.invalid && emailField.touched}" />
+  <div class="error" *ngIf="emailField.invalid && emailField.touched">
+    请输入有效的邮箱
+  </div>
+  <br />
+
+  <!-- 密码 -->
+  <input [(ngModel)]="password" name="password" type="password" #passwordField="ngModel"
+         placeholder="密码" required
+         [ngClass]="{'invalid': passwordField.invalid && passwordField.touched}" />
+  <div class="error" *ngIf="passwordField.invalid && passwordField.touched">
+    密码为必填项
+  </div>
+  <br />
+
+  <!-- 注册按钮 -->
+  <button
+    type="submit"
+    [disabled]="form.invalid"
+    [ngClass]="{'submit-disabled': form.invalid, 'submit-active': form.valid}">
+    注册
+  </button>
+</form>

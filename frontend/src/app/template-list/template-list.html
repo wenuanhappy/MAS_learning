@@ -1,0 +1,24 @@
+<div class="template-layout">
+  <app-sidebar></app-sidebar>
+  <div class="template-main">
+    <div class="template-container">
+      <h2>从模版新建</h2>
+      <p class="template-desc">选择一个场景模版，快速开始构建你的 Agent 工作流</p>
+
+      <div class="template-grid">
+        <div
+          class="template-card"
+          *ngFor="let tpl of templates"
+          (click)="loadTemplate(tpl)"
+        >
+          <div class="template-icon">{{ tpl.icon }}</div>
+          <div class="template-info">
+            <div class="template-name">{{ tpl.name }}</div>
+            <div class="template-description">{{ tpl.description }}</div>
+          </div>
+          <div class="template-arrow">→</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

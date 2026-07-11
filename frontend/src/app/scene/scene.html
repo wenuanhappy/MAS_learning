@@ -1,0 +1,79 @@
+<div class="scene-layout">
+  <app-sidebar></app-sidebar>
+  <div class="scene-main">
+    <div class="scene-toolbar">
+      <button (click)="goBackToEditor()" class="btn-back">
+        ← 返回编辑器
+      </button>
+      <div class="toolbar-spacer"></div>
+      <button (click)="runSimulation()" [disabled]="isRunning">
+        {{ isRunning ? '运行中...' : '▶ 运行' }}
+      </button>
+      <button (click)="togglePause()" [disabled]="!isRunning || isStepMode">
+        {{ isPaused ? '▶ 继续' : '⏸ 暂停' }}
+      </button>
+      <button (click)="runSingleStep()" [disabled]="isRunning && !isStepMode">
+        {{ isStepMode ? '下一步' : '逐步执行' }}
+      </button>
+    </div>
+    <div class="scene-content">
+      <div class="scene-canvas-wrapper">
+        <canvas #canvas></canvas>
+        <div class="hint">
+          Click to enter scene<br>
+          WASD to move
+        </div>
+        <div class="proximity-hint" *ngIf="nearbyAgent && !showAgentChat && !showAgentEditor">
+          <div class="proximity-hint-content">
+            <span class="proximity-agent-name">{{ nearbyAgent.role || nearbyAgent.name }}</span>
+            <span class="proximity-key">按 <kbd>F</kbd> 对话</span>
+          </div>
+        </div>
+        <div class="minimap-container" title="点击 Agent 点可编辑状态（暂停或未运行时）">
+          <canvas #minimapCanvas width="200" height="200"></canvas>
+        </div>
+      </div>
+      <div class="chat-panel">
+        <div class="chat-panel-header">对话记录</div>
+        <div class="chat-log" #chatLogContainer>
+          <div *ngFor="let entry of chatLog" class="chat-entry">
+            <div class="chat-entry-header">
+              <span class="chat-from">{{ entry.from }}</span>
+              <span *ngIf="entry.to" class="chat-arrow">→</span>
+              <span *ngIf="entry.to" class="chat-to">{{ entry.to }}</span>
+            </div>
+            <div class="chat-entry-message">{{ entry.message }}</div>
+          </div>
+          <div *ngIf="isThinking" class="chat-entry chat-thinking">
+            <div class="chat-entry-header">
+              <span class="chat-from thinking-agent">{{ thinkingAgent?.role || 'Agent' }}</span>
+              <span class="chat-role thinking-role">({{ thinkingAgent?.id }})</span>
+            </div>
+            <div class="chat-entry-message thinking-message">
+              <span class="thinking-dots">正在思考</span>
+              <span class="dots-animation">...</span>
+            </div>
+          </div>
+          <div *ngIf="chatLog.length === 0 && !isThinking" class="chat-empty">
+            点击运行按钮开始模拟
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Agent 编辑面板 - 放在 scene-layout 外部，避免被 overflow:hidden 裁剪 -->
+<app-agent-editor-panel
+  [visible]="showAgentEditor"
+  [agent]="selectedAgent"
+  (close)="closeAgentEditor()"
+  (save)="saveAgentEdits($event)"
+></app-agent-editor-panel>
+
+<!-- Agent 对话面板 -->
+<app-agent-chat-dialog
+  [visible]="showAgentChat"
+  [agent]="chatAgent"
+  (close)="closeAgentChat()"
+></app-agent-chat-dialog>

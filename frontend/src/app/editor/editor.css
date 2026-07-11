@@ -1,0 +1,625 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.save-toast {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10000;
+  padding: 10px 28px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  background: rgba(40, 40, 60, 0.92);
+  border: 1px solid rgba(79, 195, 247, 0.4);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  animation: toastIn 0.3s ease-out;
+  pointer-events: none;
+}
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 16px;
+  background: #252526;
+  border-bottom: 1px solid #3c3c3c;
+  flex-wrap: wrap;
+}
+
+.toolbar-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.group-label {
+  font-size: 11px;
+  color: #888;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.toolbar input,
+.toolbar textarea {
+  background: #1e1e1e;
+  color: white;
+  border: 1px solid #555;
+  border-radius: 6px;
+  padding: 8px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.toolbar input:focus,
+.toolbar textarea:focus {
+  border-color: #007acc;
+}
+
+.input-sm {
+  width: 100px !important;
+  height: 34px !important;
+  font-size: 13px;
+}
+
+.input-prompt {
+  width: 200px !important;
+  min-height: 34px !important;
+  max-height: 80px;
+  font-size: 13px;
+}
+
+.toolbar button {
+  height: 34px;
+  padding: 0 14px;
+  border: none;
+  border-radius: 6px;
+  background: #007acc;
+  color: white;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.toolbar button:hover:not(:disabled) {
+  background: #1493ff;
+}
+
+.btn-primary {
+  background: #0e639c !important;
+}
+
+.btn-primary:hover {
+  background: #1177bb !important;
+}
+
+.btn-judge-toggle {
+  background: rgba(255, 152, 0, 0.15) !important;
+  color: #ff9800 !important;
+  border: 1px solid rgba(255, 152, 0, 0.3) !important;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.btn-judge-toggle.active {
+  background: rgba(255, 152, 0, 0.3) !important;
+  border-color: #ff9800 !important;
+}
+
+.toggle-icon {
+  font-size: 10px;
+}
+
+.btn-end {
+  background: rgba(231, 76, 60, 0.15) !important;
+  color: #e74c3c !important;
+  border: 1px solid rgba(231, 76, 60, 0.3) !important;
+}
+
+.btn-end:hover:not(:disabled) {
+  background: rgba(231, 76, 60, 0.25) !important;
+}
+
+.btn-end[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.toolbar-actions {
+  margin-left: auto;
+  gap: 10px;
+}
+
+/* 任务目标栏 - 可折叠 */
+.task-bar {
+  background: #1e1e1e;
+  border-bottom: 1px solid #3c3c3c;
+  transition: all 0.3s ease;
+}
+
+.task-bar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s;
+}
+
+.task-bar-header:hover {
+  background: #252526;
+}
+
+.task-label {
+  font-size: 13px;
+  color: #4fc3f7;
+  font-weight: 600;
+}
+
+.task-toggle {
+  font-size: 12px;
+  color: #888;
+  transition: transform 0.3s ease;
+}
+
+.task-bar-body {
+  padding: 12px 16px 12px 16px;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 折叠状态 */
+.task-bar.collapsed {
+  border-bottom-color: transparent;
+}
+
+/* 场景知识面板 */
+.education-bar {
+  background: #1a1a2e;
+  border-bottom: 1px solid #3c3c3c;
+  transition: all 0.3s ease;
+}
+
+.education-bar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s;
+}
+
+.education-bar-header:hover {
+  background: #252540;
+}
+
+.education-label {
+  font-size: 13px;
+  color: #81c784;
+  font-weight: 600;
+}
+
+.education-toggle {
+  font-size: 12px;
+  color: #888;
+  transition: transform 0.3s ease;
+}
+
+.education-bar-body {
+  padding: 12px 16px 16px 16px;
+  animation: slideDown 0.3s ease;
+}
+
+.education-content {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 13px;
+  line-height: 1.7;
+  color: #ccc;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.education-bar.collapsed {
+  border-bottom-color: transparent;
+}
+
+.input-task-goal {
+  width: 100%;
+  padding: 8px 14px;
+  border: 1px solid #3c3c3c;
+  border-radius: 6px;
+  background: #252526;
+  color: #ddd;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input-task-goal:focus {
+  border-color: #4fc3f7;
+  box-shadow: 0 0 0 3px rgba(79, 195, 247, 0.15);
+}
+
+.input-task-goal::placeholder {
+  color: #666;
+}
+
+.btn-action {
+  background: #28a745 !important;
+  font-weight: 500;
+}
+
+.btn-action:hover {
+  background: #218838 !important;
+}
+
+.btn-secondary {
+  background: #444 !important;
+  font-size: 12px;
+}
+
+.btn-secondary:hover {
+  background: #555 !important;
+}
+
+/* 判断节点配置面板 */
+.judge-panel {
+  background: rgba(255, 152, 0, 0.05);
+  border-bottom: 1px solid rgba(255, 152, 0, 0.2);
+  padding: 12px 16px;
+}
+
+.judge-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  font-weight: bold;
+  color: #ff9800;
+  font-size: 14px;
+}
+
+.close-panel-btn {
+  background: transparent;
+  border: none;
+  color: #888;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 0 4px;
+  line-height: 1;
+}
+
+.close-panel-btn:hover {
+  color: #ff9800;
+}
+
+.judge-panel-body {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* 条件选项列表 */
+.condition-options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 200px;
+}
+
+/* 判断/终止节点样式 */
+.judge-node {
+  border-color: #ff9800 !important;
+  background: linear-gradient(135deg, #2d2d30, #3d3530) !important;
+}
+
+.judge-node:hover {
+  border-color: #ffa726 !important;
+}
+
+.judge-node .node-title {
+  color: #ff9800 !important;
+}
+
+.end-node {
+  border-color: #e74c3c !important;
+  background: linear-gradient(135deg, #2d2d30, #3d2020) !important;
+}
+
+.end-node:hover {
+  border-color: #ec7063 !important;
+}
+
+.end-node .node-title {
+  color: #e74c3c !important;
+}
+
+.condition-opt-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 152, 0, 0.15);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+}
+
+.opt-name {
+  background: #ff9800;
+  color: #1e1e1e;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-weight: bold;
+  font-size: 10px;
+}
+
+.opt-desc {
+  color: #ccc;
+  flex: 1;
+}
+
+.remove-btn {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: transparent;
+  border: none;
+  color: #aaa;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.remove-btn:hover {
+  background: rgba(255, 0, 0, 0.3);
+  color: #fff;
+}
+
+.add-condition-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.add-condition-row input {
+  width: 100px;
+  height: 32px;
+  font-size: 12px;
+}
+
+.add-opt-btn {
+  width: 32px;
+  height: 32px;
+  background: #4caf50 !important;
+  border-radius: 50% !important;
+  font-size: 16px !important;
+  padding: 0 !important;
+}
+
+.judge-create-btn {
+  background: #ff9800 !important;
+  height: 34px !important;
+  font-weight: bold !important;
+}
+
+.judge-create-btn:hover:not(:disabled) {
+  background: #ffa726 !important;
+}
+
+.judge-create-btn[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.canvas {
+
+  flex: 1;
+
+  position: relative;
+
+  overflow: hidden;
+
+  background-color: #1e1e1e;
+
+  background-image:
+    linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+
+  background-size: 24px 24px;
+}
+
+.edges {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.node {
+  position: absolute;
+  width: 180px;
+  min-height: 120px;
+  background: #2d2d30;
+  border: 1px solid #3f3f46;
+  border-radius: 12px;
+  padding: 12px;
+  color: white;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    transform 0.15s,
+    box-shadow 0.15s,
+    border 0.15s;
+  box-shadow:
+    0 2px 8px rgba(0,0,0,0.35);
+}
+
+.node:hover {
+  transform: translateY(-2px);
+  border: 1px solid #007acc;
+  box-shadow:
+    0 6px 16px rgba(0,0,0,0.45);
+}
+
+.node-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #4fc3f7;
+}
+
+.node-id {
+  font-size: 12px;
+  color: #aaaaaa;
+  margin-bottom: 10px;
+  word-break: break-all;
+}
+
+.node-prompt {
+  font-size: 13px;
+  line-height: 1.4;
+  color: #dddddd;
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 120px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.node-prompt::-webkit-scrollbar {
+  width: 6px;
+}
+
+.node-prompt::-webkit-scrollbar-thumb {
+  background: #666;
+  border-radius: 4px;
+}
+
+.context-menu {
+  position: fixed;
+  background: #2d2d30;
+  border: 1px solid #555;
+  border-radius: 8px;
+  overflow: hidden;
+  z-index: 9999;
+  min-width: 140px;
+  box-shadow:
+    0 4px 16px rgba(0,0,0,0.45);
+}
+
+.context-menu div {
+  padding: 10px 14px;
+  color: white;
+  cursor: pointer;
+  transition: 0.15s;
+}
+
+.context-menu div:hover {
+  background: #007acc;
+}
+
+.condition-panel {
+  position: fixed;
+  background: #2d2d30;
+  color: white;
+  width: 280px;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid #444;
+  box-shadow:
+    0 8px 24px rgba(0,0,0,0.45);
+  z-index: 1000;
+}
+
+.condition-panel h3 {
+  margin-top: 0;
+  margin-bottom: 12px;
+  font-size: 16px;
+}
+
+.condition-panel input,
+.condition-panel select,
+.condition-panel textarea {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #555;
+  background: #1e1e1e;
+  color: white;
+  outline: none;
+}
+
+.condition-panel button {
+  width: 100%;
+  height: 36px;
+  border: none;
+  border-radius: 6px;
+  background: #007acc;
+  color: white;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.condition-panel button:hover {
+  background: #1493ff;
+}
+
+.editor-layout {
+
+  width: 100%;
+
+  height: 100%;
+
+  display: flex;
+
+  overflow: hidden;
+}
+.editor-main {
+
+  flex: 1;
+
+  display: flex;
+
+  flex-direction: column;
+
+  overflow: hidden;
+}

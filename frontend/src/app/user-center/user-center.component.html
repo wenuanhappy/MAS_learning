@@ -1,0 +1,331 @@
+<div class="user-container">
+  <!-- 左侧边栏 -->
+  <app-sidebar></app-sidebar>
+
+  <!-- 右侧内容 -->
+  <div class="content">
+    <div class="intro-section">
+      <h1 class="intro-title">多智能体学习平台</h1>
+      <p class="intro-subtitle">Multi-Agent Learning Platform</p>
+      
+      <div class="markdown-content">
+        <h2>平台介绍</h2>
+        <p>本平台是一个面向 <strong>多智能体（Multi-Agent）</strong> 学习与实验的交互式平台，帮助你直观理解多个 AI Agent 如何协作完成复杂任务。核心特性包括：</p>
+        
+        <ul>
+          <li><strong>可视化工作流编辑器</strong> -- 拖拽式设计 Agent 协作流程图</li>
+          <li><strong>2D 工作流可视化</strong> -- 实时观察 Agent 的运行状态与交互过程</li>
+          <li><strong>模版快速起步</strong> -- 内置软件开发、新闻编辑、医疗诊断等场景模版</li>
+          <li><strong>条件分支与循环</strong> -- 支持判断节点，实现动态工作流</li>
+          <li><strong>逐步调试</strong> -- 单步执行、暂停、继续，深入理解每一步</li>
+          <li><strong>3D 躲猫猫实验</strong> -- 在 3D 场景中观察多 Agent 的躲藏与搜索策略，研究信息共享对协作效率的影响</li>
+        </ul>
+
+        <h2>快速开始</h2>
+
+        <h3>方式一：从模版新建（推荐新手）</h3>
+        <ol>
+          <li>点击侧边栏 <strong>工作流</strong> 展开子菜单</li>
+          <li>点击 <strong>从模版新建</strong></li>
+          <li>选择一个场景模版（如"软件开发场景"）</li>
+          <li>自动加载到编辑器，可直接运行</li>
+        </ol>
+
+        <h3>方式二：从零构建</h3>
+        <ol>
+          <li>点击侧边栏 <strong>工作流</strong> 展开子菜单</li>
+          <li>点击 <strong>新建工作流</strong> 进入编辑器</li>
+          <li>在工具栏输入 Agent 的 ID、Role、Prompt，点击"添加"</li>
+          <li>右键节点，添加边或条件边，连接各 Agent</li>
+          <li>设置任务目标，点击 <strong>进入场景</strong> 运行</li>
+        </ol>
+
+        <h2>编辑器操作</h2>
+
+        <h3>添加节点</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>字段</th>
+              <th>说明</th>
+              <th>示例</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>ID</code></td>
+              <td>Agent 的唯一标识</td>
+              <td><code>id_pm</code>, <code>id_dev</code></td>
+            </tr>
+            <tr>
+              <td><code>Role</code></td>
+              <td>角色名称（显示在节点上）</td>
+              <td><code>PM</code>, <code>Developer</code></td>
+            </tr>
+            <tr>
+              <td><code>Prompt</code></td>
+              <td>定义该 Agent 的职责和输出要求</td>
+              <td>你是产品经理，请输出需求列表</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>连接节点</h3>
+        <ul>
+          <li><strong>普通边</strong>：右键节点，添加边，点击目标节点</li>
+          <li><strong>条件边</strong>：需先创建判断节点，右键节点，添加条件边，配置条件</li>
+        </ul>
+
+        <h3>特殊节点</h3>
+        <ul>
+          <li><strong>判断节点</strong>：根据前序输出做条件分支，如"测试通过/不通过"</li>
+          <li><strong>终止节点</strong>：标记工作流结束</li>
+        </ul>
+
+        <h3>工具栏按钮</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>按钮</th>
+              <th>功能</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>进入场景</td>
+              <td>保存工作流并跳转到 2D 可视化场景运行</td>
+            </tr>
+            <tr>
+              <td>导出 JSON</td>
+              <td>将当前工作流导出为 JSON 文件下载</td>
+            </tr>
+            <tr>
+              <td>保存</td>
+              <td>保存工作流到服务器</td>
+            </tr>
+            <tr>
+              <td>加载</td>
+              <td>从 JSON 文件加载工作流到画布</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>2D 工作流可视化</h2>
+
+        <h3>运行控制</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>按钮</th>
+              <th>功能</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>运行</td>
+              <td>自动执行完整工作流</td>
+            </tr>
+            <tr>
+              <td>暂停 / 继续</td>
+              <td>运行中随时暂停或继续</td>
+            </tr>
+            <tr>
+              <td>逐步执行 / 下一步</td>
+              <td>每点击一次执行一个 Agent，适合学习调试</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>小地图</h3>
+        <p>左上角小地图实时显示所有 Agent 位置：</p>
+        <ul>
+          <li>彩色圆点代表不同 Agent</li>
+          <li>虚线表示 Agent 正在移动的方向</li>
+          <li>实线表示两个 Agent 正在近距离交互</li>
+          <li>点击圆点可打开 Agent 编辑面板（暂停/未运行时）</li>
+        </ul>
+
+        <h2>3D 躲猫猫实验</h2>
+
+        <p>3D 躲猫猫是一个多 Agent 策略实验场景，用于观察和研究躲藏者之间的信息共享对搜索效率的影响。</p>
+
+        <h3>场景说明</h3>
+        <ul>
+          <li>场景中有一个搜索者和多个躲藏者</li>
+          <li>搜索者拥有 30 度视野范围，视线会被障碍物遮挡</li>
+          <li>搜索者具有记忆能力，会记录已搜索过的位置</li>
+          <li>躲藏者可以感知一定范围内（8米）的搜索者</li>
+          <li>躲藏者有有限的移动次数（每局 2 次），可在搜索过程中选择移动或原地不动</li>
+          <li>已被其他躲藏者占据的位置不能再被选择</li>
+        </ul>
+
+        <h3>游戏配置</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>选项</th>
+              <th>说明</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>躲藏者数量</td>
+              <td>可选择 1-5 名躲藏者，默认 3 名</td>
+            </tr>
+            <tr>
+              <td>信息共享</td>
+              <td>开启后，躲藏者之间可以共享"搜索者在我附近"的警告信息，包含发送者的位置和搜索者距离；关闭时躲藏者只能依靠自身感知</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>实验目的</h3>
+        <p>通过对比"信息共享"开启与关闭时的搜索轮次，观察信息共享对躲藏者存活率的影响：</p>
+        <ul>
+          <li>开启信息共享：躲藏者可以收到队友的警告，更可能及时逃离搜索者</li>
+          <li>关闭信息共享：躲藏者只能依靠自身感知，可能无法及时察觉搜索者靠近</li>
+        </ul>
+
+        <h3>3D 场景操作</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>操作</th>
+              <th>按键</th>
+              <th>说明</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>旋转视角</td>
+              <td>鼠标左键拖拽</td>
+              <td>围绕场景中心旋转摄像机</td>
+            </tr>
+            <tr>
+              <td>缩放</td>
+              <td>鼠标滚轮</td>
+              <td>拉近或拉远视角</td>
+            </tr>
+            <tr>
+              <td>平移视角</td>
+              <td>鼠标右键拖拽</td>
+              <td>平移摄像机位置</td>
+            </tr>
+            <tr>
+              <td>移动摄像机</td>
+              <td>W / A / S / D</td>
+              <td>沿摄像机朝向前后左右移动</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>场景图例</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>颜色</th>
+              <th>含义</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>蓝色</td>
+              <td>躲藏者 1</td>
+            </tr>
+            <tr>
+              <td>绿色</td>
+              <td>躲藏者 2</td>
+            </tr>
+            <tr>
+              <td>紫色</td>
+              <td>躲藏者 3</td>
+            </tr>
+            <tr>
+              <td>红色</td>
+              <td>搜索者</td>
+            </tr>
+            <tr>
+              <td>黄色扇形</td>
+              <td>搜索者视野范围</td>
+            </tr>
+            <tr>
+              <td>黄色圆环</td>
+              <td>躲避点</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>内置场景模版</h2>
+
+        <table>
+          <thead>
+            <tr>
+              <th>模版</th>
+              <th>流程</th>
+              <th>学习重点</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>软件开发</td>
+              <td>PM - 架构师 - 开发 - 测试 - 判断</td>
+              <td>条件循环：测试不通过返回开发</td>
+            </tr>
+            <tr>
+              <td>新闻编辑</td>
+              <td>记者 - 编辑 - 事实核查 - 判断</td>
+              <td>审核机制：核查不通过打回重写</td>
+            </tr>
+            <tr>
+              <td>医疗诊断</td>
+              <td>问诊 - 初步诊断 - 检验分析 - 判断 - 治疗</td>
+              <td>多角色协作：不确定时重新问诊</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>学习建议</h2>
+        <ol>
+          <li><strong>先跑模版</strong>：从"软件开发场景"开始，用逐步执行观察每个 Agent 的输入输出</li>
+          <li><strong>修改 Prompt</strong>：尝试修改某个 Agent 的 Prompt，观察输出变化</li>
+          <li><strong>设计自己的流程</strong>：从零构建一个工作流，理解条件分支和循环的作用</li>
+          <li><strong>对比不同场景</strong>：观察软件开发、新闻编辑、医疗诊断中 Agent 协作模式的异同</li>
+          <li><strong>信息共享实验</strong>：在 3D 躲猫猫中，分别开启和关闭信息共享，对比搜索者找到所有躲藏者所需的轮次</li>
+        </ol>
+
+        <h2>常见问题</h2>
+        
+        <details>
+          <summary><strong>Q: 如何保存我的工作流？</strong></summary>
+          <p>A: 点击编辑器工具栏的"保存"按钮保存到服务器，或点击"导出 JSON"下载到本地。下次可通过"加载"按钮或"我的工作流"恢复。</p>
+        </details>
+
+        <details>
+          <summary><strong>Q: 为什么 Agent 的回复不太准确？</strong></summary>
+          <p>A: Prompt 的质量直接影响输出。建议：1. 明确角色和输出格式；2. 提供具体示例；3. 避免模糊描述。系统已优化为传递完整上下文历史。</p>
+        </details>
+
+        <details>
+          <summary><strong>Q: 条件分支是怎么工作的？</strong></summary>
+          <p>A: 判断节点（Judge Agent）会根据前序输出生成一个 JSON 条件结果（如 <code>{{ '{' }}"condition": "pass"{{ '}' }}</code>），系统据此决定走哪条分支。你可以在条件边中配置每个条件值对应的目标节点。</p>
+        </details>
+
+        <details>
+          <summary><strong>Q: 3D 躲猫猫中信息共享具体共享了什么？</strong></summary>
+          <p>A: 开启信息共享后，当某个躲藏者感知到搜索者在其 8 米范围内时，其他躲藏者会收到警告信息，包含发送者的位置和搜索者距其的距离。例如："躲藏者2(位置:-5,8)报告: 搜索者距其3.5米"。收到警告的躲藏者可以据此决定是否移动到更安全的躲避点。</p>
+        </details>
+
+        <details>
+          <summary><strong>Q: 躲藏者能移动到其他躲藏者所在的位置吗？</strong></summary>
+          <p>A: 不能。每个躲避点同一时间只能容纳一名躲藏者。已被占据的位置不会出现在其他躲藏者的可选项中。</p>
+        </details>
+
+        <hr>
+
+        <div class="footer-note">
+          <p>开始你的多智能体学习之旅吧！</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,77 @@
+<div class="panel">
+  <div class="header">
+    <span>条件分支配置</span>
+    <button class="close-btn" (click)="onClose()">✕</button>
+  </div>
+
+  <div class="body">
+
+    <div class="row">
+      <label>判断节点</label>
+      <select [(ngModel)]="edge.judge_agent" (change)="onJudgeChange()">
+        <option value="">请选择判断节点</option>
+        <option *ngFor="let n of judgeNodes" [value]="n.id">
+          {{ n.role }} ({{ n.id }})
+        </option>
+      </select>
+    </div>
+
+    <div *ngIf="selectedJudgeNode" class="judge-info">
+      <small>可用条件选项（来自判断节点的预定义）：</small>
+    </div>
+
+    <hr />
+
+    <div class="section-title">已配置的条件</div>
+
+    <div class="condition-list">
+      <div class="condition-item"
+           *ngFor="let key of (edge.conditions | keyvalue)">
+        <div class="text">
+          <b>{{ key.key }}</b> → {{ getNodeName(key.value) }}
+        </div>
+
+        <button (click)="removeCondition(key.key)">删除</button>
+      </div>
+      <div *ngIf="(edge.conditions | keyvalue).length === 0" class="empty-hint">暂无配置</div>
+    </div>
+
+    <hr />
+
+    <div *ngIf="edge.judge_agent && availableConditions.length > 0" class="add-box">
+      <div class="section-title">添加新条件</div>
+
+      <div class="condition-select-row">
+        <label>选择条件：</label>
+        <select [(ngModel)]="conditionKey">
+          <option value="">请选择条件</option>
+          <option *ngFor="let opt of availableConditions" [value]="opt.name">
+            {{ opt.name }} - {{ opt.description }}
+          </option>
+        </select>
+      </div>
+
+      <div class="target-select-row">
+        <label>跳转到：</label>
+        <select [(ngModel)]="targetNodeId">
+          <option value="">选择目标节点</option>
+          <option value="END">END (结束)</option>
+          <option *ngFor="let n of nodes" [value]="n.id">
+            {{ n.role }}
+          </option>
+        </select>
+      </div>
+
+      <button (click)="addCondition()" [disabled]="!conditionKey || !targetNodeId">添加条件</button>
+    </div>
+
+    <div *ngIf="edge.judge_agent && availableConditions.length === 0 && selectedJudgeNode" class="all-configured-hint">
+      所有条件已配置完成
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <button class="save-btn" (click)="onSave()">保存</button>
+  </div>
+</div>

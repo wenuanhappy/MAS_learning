@@ -1,0 +1,199 @@
+.user-container {
+  display: flex;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+/* 右边内容区域 */
+.content {
+  flex: 1;
+  height: 100vh;
+  overflow-y: auto;
+  padding: 20px;
+  background-color: #1e1e1e;
+}
+
+/* 介绍区域样式 */
+.intro-section {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.intro-title {
+  font-size: 2.5em;
+  color: #4fc3f7;
+  text-align: center;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.intro-subtitle {
+  text-align: center;
+  color: #888;
+  font-size: 1.2em;
+  margin-bottom: 40px;
+  font-style: italic;
+}
+
+/* Markdown 渲染风格 - 深色主题 */
+.markdown-content {
+  line-height: 1.8;
+  color: #ddd;
+}
+
+.markdown-content h2 {
+  font-size: 1.8em;
+  color: #4fc3f7;
+  border-bottom: 2px solid #3c3c3c;
+  padding-bottom: 10px;
+  margin-top: 50px;
+  margin-bottom: 20px;
+}
+
+.markdown-content h3 {
+  font-size: 1.4em;
+  color: #81c784;
+  margin-top: 30px;
+  margin-bottom: 15px;
+}
+
+.markdown-content p {
+  margin-bottom: 15px;
+  text-align: justify;
+}
+
+.markdown-content ul,
+.markdown-content ol {
+  margin-left: 25px;
+  margin-bottom: 20px;
+}
+
+.markdown-content li {
+  margin-bottom: 8px;
+}
+
+.markdown-content strong {
+  color: #4fc3f7;
+  font-weight: 600;
+}
+
+.markdown-content code {
+  background-color: #2d2d30;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9em;
+  color: #ce9178;
+}
+
+.markdown-content pre {
+  background-color: #252526;
+  border-left: 4px solid #4fc3f7;
+  padding: 15px 20px;
+  overflow-x: auto;
+  margin: 20px 0;
+  border-radius: 4px;
+}
+
+.markdown-content pre code {
+  background-color: transparent;
+  padding: 0;
+  color: #d4d4d4;
+  font-size: 0.95em;
+  line-height: 1.6;
+}
+
+.markdown-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.markdown-content th,
+.markdown-content td {
+  border: 1px solid #3c3c3c;
+  padding: 12px 15px;
+  text-align: left;
+}
+
+.markdown-content th {
+  background-color: #2d2d30;
+  font-weight: 600;
+  color: #4fc3f7;
+}
+
+.markdown-content tr:nth-child(even) {
+  background-color: #252526;
+}
+
+.markdown-content tr:hover {
+  background-color: #2a2a2d;
+}
+
+.markdown-content blockquote {
+  border-left: 4px solid #81c784;
+  background-color: #1b3a1b;
+  padding: 15px 20px;
+  margin: 20px 0;
+  border-radius: 4px;
+}
+
+.markdown-content blockquote p {
+  margin: 0;
+  color: #c8e6c9;
+}
+
+.markdown-content details {
+  background-color: #252526;
+  border: 1px solid #3c3c3c;
+  border-radius: 6px;
+  padding: 15px;
+  margin: 15px 0;
+}
+
+.markdown-content summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: #4fc3f7;
+  outline: none;
+}
+
+.markdown-content summary:hover {
+  color: #81d4fa;
+}
+
+.markdown-content hr {
+  border: none;
+  border-top: 2px solid #3c3c3c;
+  margin: 40px 0;
+}
+
+.markdown-content kbd {
+  display: inline-block;
+  padding: 4px 8px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9em;
+  background-color: #333;
+  border: 1px solid #555;
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  margin: 0 2px;
+  color: #ddd;
+}
+
+.footer-note {
+  text-align: center;
+  padding: 30px 20px;
+  background: linear-gradient(135deg, #1a237e 0%, #4a148c 100%);
+  border-radius: 12px;
+  color: white;
+  margin-top: 40px;
+}
+
+.footer-note p:first-child {
+  font-size: 1.2em;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
